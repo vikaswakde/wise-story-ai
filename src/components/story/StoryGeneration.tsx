@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Story } from "@prisma/client";
 import { useRouter } from "next/navigation";
+import { generateStoryContent } from "@/server/actions/generate";
 
 interface Props {
   story: Story;
@@ -50,53 +51,32 @@ export default function StoryGeneration({ story }: Props) {
           ),
         );
 
-        // TODO: Call Gemini API to generate story structure
+        // Generate all content using Gemini
+        const updatedStory = await generateStoryContent(story.id);
 
+        if (updatedStory.status === "error") {
+          throw new Error("Failed to generate story content");
+        }
+
+        // Update steps based on successful generation
         setSteps((prev) =>
           prev.map((step) =>
-            step.id === "structure" ? { ...step, status: "completed" } : step,
+            step.id === "structure" ||
+            step.id === "scenes" ||
+            step.id === "prompts"
+              ? { ...step, status: "completed" }
+              : step,
           ),
         );
 
-        // Step 2: Generate Scene Descriptions
-        setSteps((prev) =>
-          prev.map((step) =>
-            step.id === "scenes" ? { ...step, status: "processing" } : step,
-          ),
-        );
-
-        // TODO: Call Gemini API to generate scene descriptions
-
-        setSteps((prev) =>
-          prev.map((step) =>
-            step.id === "scenes" ? { ...step, status: "completed" } : step,
-          ),
-        );
-
-        // Step 3: Generate Image Prompts
-        setSteps((prev) =>
-          prev.map((step) =>
-            step.id === "prompts" ? { ...step, status: "processing" } : step,
-          ),
-        );
-
-        // TODO: Call Gemini API to generate image prompts
-
-        setSteps((prev) =>
-          prev.map((step) =>
-            step.id === "prompts" ? { ...step, status: "completed" } : step,
-          ),
-        );
-
-        // Step 4: Generate Images
+        // Step 4: Generate Images (TODO: Implement image generation)
         setSteps((prev) =>
           prev.map((step) =>
             step.id === "images" ? { ...step, status: "processing" } : step,
           ),
         );
-
         // TODO: Call Hugging Face API to generate images
-
+        // For now, we'll skip image generation and mark it as completed
         setSteps((prev) =>
           prev.map((step) =>
             step.id === "images" ? { ...step, status: "completed" } : step,

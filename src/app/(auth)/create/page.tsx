@@ -1,12 +1,22 @@
 import { currentUser } from "@clerk/nextjs/server";
 import { redirect } from "next/navigation";
 import StorySetupForm from "@/components/story/StorySetupForm";
+import { syncUser } from "@/server/actions/user";
 
 export default async function CreatePage() {
   const user = await currentUser();
 
   if (!user) {
     redirect("/");
+  }
+
+  // Create a FormData object for the server action
+  const formData = new FormData();
+  const result = await syncUser(formData);
+
+  if (!result.success) {
+    // Handle error - you might want to show an error message
+    console.error("Failed to sync user");
   }
 
   return (

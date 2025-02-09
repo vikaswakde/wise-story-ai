@@ -1,3 +1,5 @@
+"use server";
+
 import { z } from "zod";
 import { db } from "@/server/db";
 
@@ -14,6 +16,16 @@ export type CreateStoryInput = z.infer<typeof createStorySchema>;
 export async function createStory(input: CreateStoryInput) {
   const validated = createStorySchema.parse(input);
 
+  // First, ensure the user exists
+  const user = await db.user.findUnique({
+    where: { id: validated.userId },
+  });
+
+  if (!user) {
+    throw new Error("User not found");
+  }
+
+  // Create the story
   const story = await db.story.create({
     data: {
       title: validated.title,
@@ -21,7 +33,7 @@ export async function createStory(input: CreateStoryInput) {
       ageGroup: validated.ageGroup,
       language: validated.language,
       userId: validated.userId,
-      content: {}, // Will be populated during generation
+      content: { structure: null, scenes: [], imagePrompts: [] }, // Initialize with empty content
       status: "draft",
     },
   });

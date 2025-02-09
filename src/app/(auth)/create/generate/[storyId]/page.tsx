@@ -3,14 +3,13 @@ import { redirect } from "next/navigation";
 import { db } from "@/server/db";
 import StoryGeneration from "@/components/story/StoryGeneration";
 
-interface Props {
-  params: {
-    storyId: string;
-  };
-}
-
-export default async function GenerateStoryPage({ params }: Props) {
+export default async function GenerateStoryPage({
+  params,
+}: {
+  params: Promise<{ storyId: string }>;
+}) {
   const user = await currentUser();
+  const resolvedParams = await params;
 
   if (!user) {
     redirect("/");
@@ -19,7 +18,7 @@ export default async function GenerateStoryPage({ params }: Props) {
   // Fetch the story
   const story = await db.story.findUnique({
     where: {
-      id: params.storyId,
+      id: resolvedParams.storyId,
       userId: user.id,
     },
   });

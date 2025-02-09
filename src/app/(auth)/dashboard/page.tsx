@@ -2,6 +2,7 @@ import { UserButton } from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { db } from "@/server/db";
 
 export default async function Dashboard() {
   const user = await currentUser();
@@ -10,6 +11,12 @@ export default async function Dashboard() {
   if (!user) {
     redirect("/");
   }
+
+  // Fetch user's stories
+  const stories = await db.story.findMany({
+    where: { userId: user.id },
+    orderBy: { createdAt: "desc" },
+  });
 
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
@@ -42,14 +49,41 @@ export default async function Dashboard() {
 
         {/* Stories Grid */}
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
-            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
-              No stories yet
-            </h3>
-            <p className="text-sm text-gray-600 dark:text-gray-400">
-              Click &quot;Create New Story&quot; to get started!
-            </p>
-          </div>
+          {stories.length === 0 ? (
+            <div className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-800 dark:bg-gray-950">
+              <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                No stories yet
+              </h3>
+              <p className="text-sm text-gray-600 dark:text-gray-400">
+                Click &quot;Create New Story&quot; to get started!
+              </p>
+            </div>
+          ) : (
+            stories.map((story) => (
+              <Link
+                key={story.id}
+                href={`/stories/${story.id}`}
+                className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm transition-colors hover:border-indigo-500 dark:border-gray-800 dark:bg-gray-950 dark:hover:border-indigo-500"
+              >
+                <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-white">
+                  {story.title}
+                </h3>
+                {story.description && (
+                  <p className="mb-4 text-sm text-gray-600 dark:text-gray-400">
+                    {story.description}
+                  </p>
+                )}
+                <div className="flex items-center gap-4">
+                  <span className="inline-flex items-center rounded-full bg-indigo-50 px-2 py-1 text-xs font-medium text-indigo-700 dark:bg-indigo-950 dark:text-indigo-300">
+                    {story.status}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {new Date(story.createdAt).toLocaleDateString()}
+                  </span>
+                </div>
+              </Link>
+            ))
+          )}
         </div>
       </main>
     </div>

@@ -47,7 +47,6 @@ export default function StorySetupForm({ userId }: { userId: string }) {
       });
 
       toast.success("Story created successfully!");
-      // Redirect to story generation page with the story ID
       router.push(`/create/generate/${story.id}`);
     } catch (error) {
       console.error("Error creating story:", error);
@@ -71,7 +70,7 @@ export default function StorySetupForm({ userId }: { userId: string }) {
           type="text"
           id="title"
           {...register("title")}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:text-sm"
         />
         {errors.title && (
           <p className="mt-1 text-sm text-red-600">{errors.title.message}</p>
@@ -90,7 +89,7 @@ export default function StorySetupForm({ userId }: { userId: string }) {
           id="description"
           rows={3}
           {...register("description")}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:text-sm"
         />
         {errors.description && (
           <p className="mt-1 text-sm text-red-600">
@@ -110,7 +109,7 @@ export default function StorySetupForm({ userId }: { userId: string }) {
         <select
           id="ageGroup"
           {...register("ageGroup")}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:text-sm"
         >
           <option value="">Select an age group</option>
           <option value="3-5">3-5 years</option>
@@ -133,7 +132,7 @@ export default function StorySetupForm({ userId }: { userId: string }) {
         <select
           id="language"
           {...register("language")}
-          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 sm:text-sm dark:border-gray-700 dark:bg-gray-800 dark:text-white"
+          className="mt-1 block w-full rounded-md border border-gray-300 px-3 py-2 text-gray-900 shadow-sm focus:border-indigo-500 focus:outline-none focus:ring-indigo-500 dark:border-gray-700 dark:bg-gray-800 dark:text-white sm:text-sm"
         >
           <option value="">Select a language</option>
           <option value="en">English</option>

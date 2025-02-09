@@ -44,8 +44,8 @@ model Story {
     id          String   @id @default(cuid())
     title       String
     description String?
-    content     Json // Stores story structure, scenes, and timing
-    status      String   @default("draft") // draft, processing, published
+    content     Json     @default("{\"structure\": null, \"scenes\": [], \"imagePrompts\": []}")
+    status      String   @default("draft") // draft, processing, generated, error
     ageGroup    String
     language    String
     userId      String
