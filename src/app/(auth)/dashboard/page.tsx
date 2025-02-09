@@ -18,7 +18,7 @@ export default async function Dashboard() {
         <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
           <div className="flex items-center gap-4">
             <h1 className="text-xl font-semibold text-gray-900 dark:text-white">
-              StoryForge AI
+              WiseStory AI
             </h1>
             <p className="text-sm text-gray-500 dark:text-gray-400">
               Welcome, {user.firstName ?? user.username ?? "User"}!

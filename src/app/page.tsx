@@ -14,7 +14,7 @@ export default async function Home() {
     <div className="flex min-h-screen flex-col items-center justify-center p-4">
       <div className="text-center">
         <h1 className="mb-4 text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl dark:text-white">
-          StoryForge AI
+          WiseStory AI
         </h1>
         <p className="mb-8 text-lg leading-8 text-gray-600 dark:text-gray-300">
           Create engaging stories with the power of AI. Perfect for
