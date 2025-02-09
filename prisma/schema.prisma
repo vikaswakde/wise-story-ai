@@ -18,3 +18,52 @@ model Post {
 
     @@index([name])
 }
+
+model User {
+    id          String           @id @default(cuid())
+    createdAt   DateTime         @default(now())
+    updatedAt   DateTime         @updatedAt
+    email       String           @unique
+    name        String?
+    stories     Story[]
+    preferences UserPreferences?
+}
+
+model UserPreferences {
+    id              String   @id @default(cuid())
+    userId          String   @unique
+    user            User     @relation(fields: [userId], references: [id])
+    ageGroup        String   @default("5-8")
+    language        String   @default("en")
+    themePreference String   @default("light")
+    createdAt       DateTime @default(now())
+    updatedAt       DateTime @updatedAt
+}
+
+model Story {
+    id          String   @id @default(cuid())
+    title       String
+    description String?
+    content     Json // Stores story structure, scenes, and timing
+    status      String   @default("draft") // draft, processing, published
+    ageGroup    String
+    language    String
+    userId      String
+    user        User     @relation(fields: [userId], references: [id])
+    assets      Asset[]
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
+}
+
+model Asset {
+    id        String   @id @default(cuid())
+    type      String // image, audio, video
+    url       String
+    prompt    String? // For AI-generated assets
+    storyId   String
+    story     Story    @relation(fields: [storyId], references: [id])
+    sequence  Int // Order in the story
+    duration  Int? // Duration in milliseconds for audio/video
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
