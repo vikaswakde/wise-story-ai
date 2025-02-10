@@ -82,7 +82,7 @@ export class GeminiService {
 
   async generateStoryContent(context: StoryContext): Promise<StoryContent> {
     try {
-      const prompt = `You are a JSON-only story generation API. Generate a children's story with these parameters:
+      const prompt = `You are a JSON-only story generation API. Generate a children's story with these parameters also since we are currently in developmetn mode only generate story with 1 chapter and 1  scene and 1 image prompt:
 - Age: ${context.ageGroup}
 - Title: "${context.title}"
 ${context.description ? `- Description: "${context.description}"` : ""}

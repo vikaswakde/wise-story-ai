@@ -23,4 +23,10 @@ export interface StoryContent {
   imagePrompts: string[];
 }
 
-export type StoryStatus = "draft" | "processing" | "generated" | "error";
+export type StoryStatus =
+  | "draft" // Initial state
+  | "processing_content" // Generating story content
+  | "processing_assets" // Generating images/audio
+  | "generated_content" // Content generated, no assets
+  | "generated" // Everything generated
+  | "error"; // Error in any step
